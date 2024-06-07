@@ -4,28 +4,11 @@
 # SPDX-FileCopyrightText: Copyright (c) 2024 Paul A. Patience <paul@apatience.com>
 # SPDX-License-Identifier: MIT
 
-guix_profile="$(dirname -- "$(realpath -- "$0")")/.guix-profile"
+script_dir="$(dirname -- "$(realpath -- "$0")")"
 
-if test -L "$guix_profile"; then
-  guix shell --pure --profile="$guix_profile" -- "$@"
+if test -L "$script_dir/.guix_profile"; then
+  guix shell --pure --profile="$script_dir/.guix_profile" -- "$@"
 else
-  # git and nss-certs for cloning the dependencies
-  guix shell --pure --root="$guix_profile" \
-    binutils \
-    boost \
-    clang-toolchain \
-    coreutils \
-    fmt \
-    -e '(list (@@ (gnu packages gcc) gcc) "lib")' \
-    git \
-    gmp \
-    libelf \
-    libunwind \
-    libunwind-headers \
-    lld \
-    ninja \
-    nss-certs \
-    pkg-config \
-    sbcl \
-    -- "$@"
+  guix shell --pure --root="$script_dir/.guix_profile" \
+    -D -f "$script_dir/guix/clasp.scm" -- "$@"
 fi
