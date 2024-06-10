@@ -1,0 +1,31 @@
+#!/bin/sh
+#* guix-shell — Run a command in a Guix environment suitable for Clasp
+#
+# SPDX-FileCopyrightText: Copyright (c) 2024 Paul A. Patience <paul@apatience.com>
+# SPDX-License-Identifier: MIT
+
+guix_profile="$(dirname -- "$(realpath -- "$0")")/.guix-profile"
+
+if test -L "$guix_profile"; then
+  guix shell --pure --profile="$guix_profile" -- "$@"
+else
+  # git and nss-certs for cloning the dependencies
+  guix shell --pure --root="$guix_profile" \
+    binutils \
+    boost \
+    clang-toolchain \
+    coreutils \
+    fmt \
+    -e '(list (@@ (gnu packages gcc) gcc) "lib")' \
+    git \
+    gmp \
+    libelf \
+    libunwind \
+    libunwind-headers \
+    lld \
+    ninja \
+    nss-certs \
+    pkg-config \
+    sbcl \
+    -- "$@"
+fi
