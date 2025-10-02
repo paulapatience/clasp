@@ -348,7 +348,7 @@ int elf_startup_loaded_object_callback(struct dl_phdr_info* info, size_t size, v
         if (newSize > oldSize) {
           vtableSectionStart = low;
           vtableSectionEnd = high;
-          printf("%s:%d:%s   moved vtableSection Start/End = %p/%p\n", __FILE__, __LINE__, __FUNCTION__, low, high);
+          // printf("%s:%d:%s   moved vtableSection Start/End = %p/%p\n", __FILE__, __LINE__, __FUNCTION__, low, high);
         }
       } else {
         hasVtableSection = true;
